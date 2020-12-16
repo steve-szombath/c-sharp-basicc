@@ -1,87 +1,89 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp1
 {
     class Program
     {
-        internal class Node
+        internal class Elem<T>
         {
-            internal int data;
-            internal Node next;
-
-            public Node(int d)
+            T ertek;
+            Elem<T> kovetkezo;
+            internal Elem(T ertek, Elem<T> kovetkezo)
             {
-                data = d;
-                next = null;
+                this.ertek = ertek;
+                this.kovetkezo = kovetkezo;
+            }
+
+            public T Ertek
+            {
+                get { return ertek; }
+                set { ertek = value; }
+            }
+
+            internal Elem<T> Kovetkezo
+            {
+                get { return kovetkezo; }
+                set { kovetkezo = value; }
             }
         }
 
-        internal class LinkedListStack
+            internal class Verem<T>
         {
-            Node top;
+            Elem<T> top;
 
-            public LinkedListStack()
+            public Verem()
             {
                 this.top = null;
             }
 
-            internal int pop()
+            internal T pop()
             {
 
                 if (top != null)
                 {
-                    int retVal = top.data;
-                    top = top.next;
-                    return retVal;
+                    T ertek = top.Ertek;
+                    top = top.Kovetkezo;
+                    return ertek;
                 }
-                //should return null
-                else return 0;
-                
+                else throw new InvalidOperationException();
             }
 
-            internal void push(int data)
+            internal void push(T ertek)
             {
-                Node newNode = new Node(data);
-                newNode.next = top;
-                top = newNode;
+                Elem<T> elem = new Elem<T>(ertek, top);
+                top = elem;
             }
 
             internal String toString()
             {
-                String retVal = "";
-                Node node = top;
-                while (node != null)
+                String s = "";
+                Elem<T> elem = top;
+                while (elem != null)
                 {
-                    retVal = retVal + " " + node.data.ToString();
+                    s = s + " " + elem.Ertek.ToString();
 
-                    node = node.next;
+                    elem = elem.Kovetkezo;
                 }
-                return retVal;
+                return s;
             }
         }
 
-        internal class LinkedListQueue
-        {
-            // double linked list
-            Node first;
-            Node last;
-
-            public LinkedListQueue()
-            {
-                this.first = null;
-                this.last = null;
-            }
-        }
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
 
-            LinkedListStack stack = new LinkedListStack();
+            Verem<int> verem = new Verem<int>();
             for (int i = 1; i<100 ;i++) {
-                stack.push(i*2);
+                verem.push(i*2);
             }
 
-            Console.WriteLine(stack.toString());
+            Console.WriteLine(verem.toString());
+
+            for (int i = 1; i < 100; i++)
+            {
+                Console.Write(verem.pop() + " ");
+            }
         }
     }
 }
