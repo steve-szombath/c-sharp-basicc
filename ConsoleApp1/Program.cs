@@ -1,74 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace ConsoleApp1
 {
+    class Elem<T>
+    {
+        public T Ertek { get; private set; }
+        public Elem<T> Kovetkezo { get; private set; }
+
+        public Elem(T ertek, Elem<T> kovetkezo)
+        {
+            Ertek = ertek;
+            Kovetkezo = kovetkezo;
+        }
+    }
+    class Verem<T>
+    {
+        private Elem<T> top;
+
+        public Verem()
+        {
+            this.top = null;
+        }
+
+        public T pop()
+        {
+
+            if (top != null)
+            {
+                T ertek = top.Ertek;
+                top = top.Kovetkezo;
+                return ertek;
+            }
+            else throw new InvalidOperationException();
+        }
+
+        public void push(T ertek)
+        {
+            Elem<T> elem = new Elem<T>(ertek, top);
+            this.top = elem;
+        }
+
+        public String toString()
+        {
+            StringBuilder builder = new StringBuilder();
+            for(Elem<T> elem = top; elem != null; elem = elem.Kovetkezo)
+            {
+                builder.Append(elem.Ertek.ToString()).Append(" ");
+
+                
+            }
+            return builder.ToString();
+        }
+    }
     class Program
     {
-        internal class Elem<T>
-        {
-            T ertek;
-            Elem<T> kovetkezo;
-            internal Elem(T ertek, Elem<T> kovetkezo)
-            {
-                this.ertek = ertek;
-                this.kovetkezo = kovetkezo;
-            }
-
-            public T Ertek
-            {
-                get { return ertek; }
-                set { ertek = value; }
-            }
-
-            internal Elem<T> Kovetkezo
-            {
-                get { return kovetkezo; }
-                set { kovetkezo = value; }
-            }
-        }
-
-            internal class Verem<T>
-        {
-            Elem<T> top;
-
-            public Verem()
-            {
-                this.top = null;
-            }
-
-            internal T pop()
-            {
-
-                if (top != null)
-                {
-                    T ertek = top.Ertek;
-                    top = top.Kovetkezo;
-                    return ertek;
-                }
-                else throw new InvalidOperationException();
-            }
-
-            internal void push(T ertek)
-            {
-                Elem<T> elem = new Elem<T>(ertek, top);
-                top = elem;
-            }
-
-            internal String toString()
-            {
-                String s = "";
-                Elem<T> elem = top;
-                while (elem != null)
-                {
-                    s = s + " " + elem.Ertek.ToString();
-
-                    elem = elem.Kovetkezo;
-                }
-                return s;
-            }
-        }
-
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
@@ -84,6 +71,8 @@ namespace ConsoleApp1
             {
                 Console.Write(verem.pop() + " ");
             }
+
+            Console.WriteLine(verem.toString());
         }
     }
 }
